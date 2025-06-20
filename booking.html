@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Bookings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h2 align="center">Your Booked Events</h2>
+  <div id="bookingList"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('username');
+
+    fetch(`http://localhost:8080/bookings/user/${username}`)
+      .then(res => res.json())
+      .then(bookings => {
+        const list = document.getElementById("bookingList");
+        bookings.forEach(b => {
+          const div = document.createElement("div");
+          div.innerHTML = `
+            <p><b>Event:</b> ${b.event.eventName}<br>
+            <b>Date:</b> ${b.event.eventDate}<br>
+            <b>Time:</b> ${b.event.eventTime}</p>
+          `;
+          list.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>
